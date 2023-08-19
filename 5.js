@@ -11,6 +11,16 @@ class BankTransfer {
   // Він приймає amount переказу як параметр та повертає число після розрахування комісії
   // Логіка розрахунку комісії за переказ amount * 1.02
   // Припустимо, комісія становить 2% від суми переказу
+
+  initiateTransfer(amount) {
+    const calculatedAmount = amount + this.calculateFee(amount);
+
+    console.log(`Ініціюємо банківський переказ: $${calculatedAmount}`);
+  }
+
+  calculateFee(amount) {
+    return amount * 0.02;
+  }
 }
 
 // Клас WalletTransfer представляє собою систему для здійснення переказів з гаманця
@@ -18,12 +28,16 @@ class WalletTransfer {
   // Створіть метод processTransfer, який відповідає за здійснення переказу з гаманця
   // Він приймає суму переказу як параметр
   // Виводимо інформацію про здійснення переказу з гаманця Здійснюємо переказ з гаманця: $${amount}
+
+  processTransfer(sum) {
+    console.log(`Здійснюємо переказ з гаманця: $${amount}`);
+  }
 }
 
 // Клас TransferAdapter виступає адаптером, який дозволяє нам користуватися
 // методами WalletTransfer так, ніби це BankTransfer.
 class TransferAdapter {
-  // Робимо конструктор, що приймає об'єкт transferSystem типу WalletTransfer
+  // Робимо конструктор, що приймає об'єкт transferSystem типу transferSystem
   // Зберігаємо посилання на об'єкт WalletTransfer у властивості transferSystem
   // Робимо метод initiateTransfer, який адаптує API WalletTransfer до API BankTransfer.
   // Він приймає amount як аргумент та повертає результат виконання переказу.
@@ -32,13 +46,33 @@ class TransferAdapter {
   // В результаті повертаємо результат виконання переказу.
   // Створюємо метод calculateFee, що приймає amount та обчислює суму комісії за переказ amount * 1.2, засновуючись на вхідній сумі.
   // Повертаємо amount * 1.2
+
+  constructor(transferSystem, WalletTransfer) {
+    this.transferSystem = transferSystem;
+    this.WalletTransfer = WalletTransfer;
+  }
+
+  initiateTransfer(amount) {
+    const calculatedAmount = this.calculateFee(amount);
+    const result = this.transferSystem.processTransfer(calculatedAmount);
+    return result;
+  }
+
+  calculateFee(amount) {
+    return amount * 1.2;
+  }
+
+  processTransfer(amount) {
+    const walletTransfer = new this.WalletTransfer();
+    return walletTransfer.initiateWalletTransfer(amount);
+  }
 }
 console.log("Завдання 5 ====================================");
 // Після виконання розкоментуйте код нижче
 
 // Створимо екземпляри BankTransfer
-// const purchase1 = new BankTransfer();
-// purchase1.initiateTransfer(1000);
+const purchase1 = new BankTransfer();
+purchase1.initiateTransfer(1000);
 
-// const purchase2 = new BankTransfer();
-// purchase2.initiateTransfer(10);
+const purchase2 = new BankTransfer();
+purchase2.initiateTransfer(10);
