@@ -21,6 +21,35 @@ function task4() {
   // Повідомлення про помилку від першого відхиленого проміса передається у функцію catch, виводимо в консоль помилку
   // Функція finally викликається незалежно від того, чи вирішено проміс, чи відхилено
   // Виводимо в консоль "Всі операції завершено"
+
+  function promise1() {
+    return new Promise((executor) => {
+      setTimeout(() => {
+        executor("Проміс 1 виконано");
+      }, 1000);
+    });
+  }
+
+  function promise2() {
+    return new Promise((res, reg) => {
+      setTimeout(() => {
+        res("'Проміс 2 виконано'");
+      }, 1000);
+    });
+  }
+
+  const promises = [promise1, promise2];
+
+  Promise.all(promises)
+    .then((result) => {
+      console.log(["Проміс 1 виконано", "Проміс 2 виконано"], result);
+    })
+    .catch((error) => {
+      console.error("Error", error);
+    })
+    .finally(() => {
+      console.log("Всі операції завершено");
+    });
 }
 
 // Викликаємо функцію task4

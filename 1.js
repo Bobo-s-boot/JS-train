@@ -13,9 +13,32 @@ function task1() {
     // За допомогою setTimeout ми симулюємо затримку timeout, яка виникає при роботі з асинхронними джерелами даних
     // Якщо об'єкт не пустий, ми викликаємо resolve з data
     // Якщо об'єкт пустий, ми викликаємо reject з новим об'єктом Error("Об'єкт пустий")
+
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (Object.keys(data)) {
+          resolve(data);
+        } else {
+          reject(new Error("Об'єкт пустий"));
+        }
+      }, timeout);
+    });
   }
 
   // Ми викликаємо getData з об'єктом { name: "John", age: 30, city: "New York" } і часом очікування 2000
+
+  const info = { name: "John", age: 30, city: "New York" };
+
+  getData(info)
+    .then((result) => {
+      console.log(result);
+    })
+    .catch((error) => {
+      console.error("Error", error);
+    })
+    .finally(() => {
+      console.log("Завдання 1 завершено");
+    });
 
   // Ми обробляємо дані, повернуті промісом
   // У разі успіху виводимо в консоль дані
